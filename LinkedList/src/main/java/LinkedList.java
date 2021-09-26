@@ -76,7 +76,7 @@ public abstract class LinkedList<T> {
   public abstract void replace(T value);
 
   /**
-   * Предусловие: элемента нет в списке
+   * Предусловие: елемента нет в списке
    * Постусловие: курсор установлен за переданным элементом
    */
   public abstract void find(T value);
