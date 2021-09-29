@@ -1,8 +1,8 @@
 public class TwoWayList<T> extends ParentList<T> {
 
   public static final int LEFT_NIL = 0; //left() не вызывался
-  public static final int LEFT_OK = 0; //left() успешный вызов
-  public static final int LEFT_ERR = 0; //курсор в начале списка
+  public static final int LEFT_OK = 1; //left() успешный вызов
+  public static final int LEFT_ERR = 2; //курсор в начале списка
 
   private int left_status;
 

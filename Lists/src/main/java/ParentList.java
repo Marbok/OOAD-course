@@ -1,32 +1,32 @@
 public abstract class ParentList<T> {
 
   public static final int RIGHT_NIL = 0; //right() не вызывался
-  public static final int RIGHT_OK = 0; //right() успешный вызов
-  public static final int RIGHT_ERR = 0; //курсор в конце списка
+  public static final int RIGHT_OK = 1; //right() успешный вызов
+  public static final int RIGHT_ERR = 2; //курсор в конце списка
 
   public static final int GET_NIL = 0; //get() не вызывался
-  public static final int GET_OK = 0; //get() успешный вызов
-  public static final int GET_ERR = 0; //список пустой
+  public static final int GET_OK = 1; //get() успешный вызов
+  public static final int GET_ERR = 2; //список пустой
 
   public static final int REMOVE_NIL = 0; //remove() не вызывался
-  public static final int REMOVE_OK = 0; //remove() успешный вызов
-  public static final int REMOVE_ERR = 0; //список пустой
+  public static final int REMOVE_OK = 1; //remove() успешный вызов
+  public static final int REMOVE_ERR = 2; //список пустой
 
   public static final int REPLACE_NIL = 0; //replace() не вызывался
-  public static final int REPLACE_OK = 0; //replace() успешный вызов
-  public static final int REPLACE_ERR = 0; //список пустой
+  public static final int REPLACE_OK = 1; //replace() успешный вызов
+  public static final int REPLACE_ERR = 2; //список пустой
 
   public static final int FIND_NIL = 0; //find() не вызывался
-  public static final int FIND_OK = 0; //find() успешный вызов
-  public static final int FIND_ERR = 0; //элемент не найден
+  public static final int FIND_OK = 1; //find() успешный вызов
+  public static final int FIND_ERR = 2; //элемент не найден
 
   public static final int PUT_LEFT_NIL = 0; //put_left() не вызывался
-  public static final int PUT_LEFT_OK = 0; //put_left() успешный вызов
-  public static final int PUT_LEFT_ERR = 0; //список пустой
+  public static final int PUT_LEFT_OK = 1; //put_left() успешный вызов
+  public static final int PUT_LEFT_ERR = 2; //список пустой
 
   public static final int PUT_RIGHT_NIL = 0; //put_right() не вызывался
-  public static final int PUT_RIGHT_OK = 0; //put_right() успешный вызов
-  public static final int PUT_RIGHT_ERR = 0; //список пустой
+  public static final int PUT_RIGHT_OK = 1; //put_right() успешный вызов
+  public static final int PUT_RIGHT_ERR = 2; //список пустой
 
   private int right_status;
   private int get_status;
@@ -126,9 +126,11 @@ public abstract class ParentList<T> {
       } else if (cursor.left == null) {
         root = cursor.right;
         cursor = cursor.right;
+        cursor.left = null;
       } else if (cursor.right == null) {
         tail = cursor.left;
         cursor = cursor.left;
+        cursor.right = null;
       } else {
         cursor.left.right = cursor.right;
         cursor.right.left = cursor.left;
@@ -184,11 +186,16 @@ public abstract class ParentList<T> {
   public void find(T value) {
     if (root != null) {
       while (!is_tail()) {
-        right();
-        if (cursor.value == value) {
-          find_status = FIND_OK;
+        if (cursor.value.equals(value)) {
+          right();
+          if (get_right_status() == RIGHT_OK) {
+            find_status = FIND_OK;
+          } else {
+            find_status = FIND_ERR;
+          }
           return;
         }
+        right();
       }
     }
     find_status = FIND_ERR;
@@ -205,7 +212,7 @@ public abstract class ParentList<T> {
     head();
     right_status = RIGHT_NIL;
     while (get_right_status() != RIGHT_ERR) {
-      if (cursor.value == value) {
+      if (cursor.value.equals(value)) {
         remove();
       } else {
         right();
@@ -234,10 +241,8 @@ public abstract class ParentList<T> {
       head();
       right_status = RIGHT_NIL;
       while (right_status != RIGHT_ERR) {
+        size++;
         right();
-        if (right_status == RIGHT_OK) {
-          size++;
-        }
       }
     }
     return size;
