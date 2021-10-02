@@ -22,6 +22,18 @@ public class QueueTest {
         queue.remove();
         assertEquals(Queue.REMOVE_OK, queue.get_remove_status());
         assertEquals(0, queue.size());
+
+        queue.push("test4");
+        queue.push("test5");
+
+        assertEquals(2, queue.size());
+        assertEquals("test4", queue.head());
+        queue.remove();
+        assertEquals(Queue.REMOVE_OK, queue.get_remove_status());
+        assertEquals("test5", queue.head());
+        queue.remove();
+        assertEquals(Queue.REMOVE_OK, queue.get_remove_status());
+        assertEquals(0, queue.size());
     }
 
     @Test
