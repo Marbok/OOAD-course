@@ -48,7 +48,7 @@ public class DynArray<T> {
   /**
    * Предусловие: индекс >= 0, но < size()
    */
-  public T getItem(int index) {
+  public T get(int index) {
     if (index < 0 || index >= count) {
       throw new IndexOutOfBoundsException(
         "Index = " + index + " out of range: 0 from " + count
@@ -75,7 +75,7 @@ public class DynArray<T> {
   }
 
   /**
-   * Постусловие: элемент добавлен в передаваемую позицию, емкость увеличивается, если необходимо
+   * Постусловие: элемент добавлен в передаваемую позицию, хвост сдвигается вправо, емкость увеличивается, если необходимо
    */
   public void insert(T itm, int index) {
     if (index < 0 || index > count) {
@@ -119,6 +119,18 @@ public class DynArray<T> {
     if (isVacuum()) {
       makeArray((int) (capacity / VACUUM_COEFF));
     }
+  }
+
+  /**
+   * Постусловие: заменяет элемент на передаваемой позиции
+   */
+  public void replace(T itm, int index) {
+    if (index < 0 || index >= count) {
+      throw new IndexOutOfBoundsException(
+        "Index = " + index + " out of range: 0 from " + count
+      );
+    }
+    array[index] = itm;
   }
 
   private boolean isVacuum() {
