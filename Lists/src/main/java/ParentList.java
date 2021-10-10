@@ -36,6 +36,8 @@ public abstract class ParentList<T> {
   private int put_right_status;
   private int put_left_status;
 
+  private int size;
+
   protected Node<T> cursor;
   protected Node<T> root;
   protected Node<T> tail;
@@ -85,6 +87,7 @@ public abstract class ParentList<T> {
         cursor.right.left = node;
         cursor.right = node;
       }
+      size++;
     } else {
       put_right_status = PUT_RIGHT_ERR;
     }
@@ -107,6 +110,7 @@ public abstract class ParentList<T> {
         cursor.left.right = node;
         cursor.left = node;
       }
+      size++;
     } else {
       put_left_status = PUT_LEFT_ERR;
     }
@@ -136,6 +140,7 @@ public abstract class ParentList<T> {
         cursor.right.left = cursor.left;
         cursor = cursor.right;
       }
+      size--;
     } else {
       remove_status = REMOVE_ERR;
     }
@@ -148,6 +153,7 @@ public abstract class ParentList<T> {
     root = null;
     tail = null;
     cursor = null;
+    size = 0;
   }
 
   /**
@@ -164,6 +170,7 @@ public abstract class ParentList<T> {
       node.left = tail;
       tail = node;
     }
+    size++;
   }
 
   /**
@@ -214,6 +221,7 @@ public abstract class ParentList<T> {
     while (get_right_status() != RIGHT_ERR) {
       if (cursor.value.equals(value)) {
         remove();
+        size--;
       } else {
         right();
       }
@@ -236,15 +244,6 @@ public abstract class ParentList<T> {
   }
 
   public int size() {
-    int size = 0;
-    if (root != null) {
-      head();
-      right_status = RIGHT_NIL;
-      while (right_status != RIGHT_ERR) {
-        size++;
-        right();
-      }
-    }
     return size;
   }
 
