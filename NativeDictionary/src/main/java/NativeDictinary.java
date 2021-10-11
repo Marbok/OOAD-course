@@ -15,7 +15,8 @@ public class NativeDictinary<T> {
   private static final int DEFAULT_CAPACITY = 10; // емкость словаря по-умолчанию
 
   private Object[] buckets; // основное хранилище
-  private int size; // сколько ячеек занято в данный момент
+  private int bucketsCount; // сколько ячеек занято в данный момент
+  private int size; // количество элементов в словаре
 
   private int put_status;
   private int remove_status;
@@ -68,6 +69,9 @@ public class NativeDictinary<T> {
         Entry<T> entry = bucket.get();
         if (entry.key.equals(key)) {
           bucket.remove();
+          if (bucket.size() == 0) {
+            buckets[bucketNum] = null;
+          }
           remove_status = bucket.get_remove_status();
           break;
         } else if (bucket.is_tail()) {
@@ -113,6 +117,10 @@ public class NativeDictinary<T> {
     return get_status == GET_OK;
   }
 
+  public int size() {
+    return size();
+  }
+
   // статусы
 
   public int get_put_status() {
@@ -138,12 +146,13 @@ public class NativeDictinary<T> {
   }
 
   private boolean needExpand() {
-    return (float) size / buckets.length > EXPAND_COEF;
+    return (float) bucketsCount / buckets.length > EXPAND_COEF;
   }
 
   private void expand() {
     Object[] oldBuckets = buckets;
     buckets = new Object[oldBuckets.length * RAISE_COEFF];
+    bucketsCount = 0;
 
     for (int i = 0, n = oldBuckets.length; i < n; i++) {
       LinkedList<Entry<T>> bucket = (LinkedList<Entry<T>>) oldBuckets[i];
@@ -166,6 +175,7 @@ public class NativeDictinary<T> {
     if (entries == null) {
       entries = new LinkedList<Entry<T>>();
       buckets[bucketNum] = entries;
+      bucketsCount++;
     }
 
     entries.head();
