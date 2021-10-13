@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class HashTable<T> {
 
   public static final int PUT_NIL = 0; // put() не вызывался
@@ -68,6 +71,20 @@ public class HashTable<T> {
 
   public boolean isFull() {
     return size == slots.length;
+  }
+
+  public int size() {
+    return size;
+  }
+
+  public List<T> getValues() {
+    List<T> values = new ArrayList<T>();
+    for (int i = 0, n = slots.length; i < n; i++) {
+      if (slots[i] != null) {
+        values.add((T) slots[i]);
+      }
+    }
+    return values;
   }
 
   // статусы
