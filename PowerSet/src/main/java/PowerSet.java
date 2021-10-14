@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class PowerSet<T> extends HashTable<T> {
 
   public PowerSet(int capacity) {
