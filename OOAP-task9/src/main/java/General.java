@@ -37,4 +37,12 @@ public class General extends Object {
   public Class<?> getClazz() {
       return this.getClass();
   }
+
+  public <T extends General, K extends General> void assignment_attempt(T source, K target) {
+      if (source.isType(target.getClass())) {
+        source = (T) target;
+      } else {
+        source = null;
+      }
+  }
 }
